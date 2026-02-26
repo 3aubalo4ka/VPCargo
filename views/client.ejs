@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Кабинет клиента — VPCargo</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header-row">
+      <h1>Здравствуйте, <%= user.login %></h1>
+      <form method="post" action="/logout">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button class="btn" type="submit">Выйти</button>
+      </form>
+    </header>
+
+    <%- include('partials') %>
+
+    <table>
+      <thead>
+        <tr><th>Номер</th><th>Статус</th><th>Оплата</th><th>Дата отправки</th><th>Стоимость</th></tr>
+      </thead>
+      <tbody>
+        <% orders.forEach((o) => { %>
+          <tr>
+            <td><%= o.cargo_number %></td>
+            <td><%= o.status %></td>
+            <td><%= o.payment_status %></td>
+            <td><%= o.date_sent ? new Date(o.date_sent).toISOString().slice(0, 10) : '' %></td>
+            <td><%= Number(o.cost).toFixed(2) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

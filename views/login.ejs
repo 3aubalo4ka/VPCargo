@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Вход — VPCargo</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container narrow">
+    <h1>Вход</h1>
+    <%- include('partials') %>
+    <form method="post" action="/login" class="stack-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <label>Логин <input name="login" required /></label>
+      <label>Пароль <input type="password" name="password" required minlength="6" /></label>
+      <button class="btn" type="submit">Войти</button>
+    </form>
+  </main>
+</body>
+</html>
