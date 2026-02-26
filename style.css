@@ -1,0 +1,12 @@
+body { font-family: Arial, sans-serif; background:#f5f6f8; margin:0; }
+.container { max-width: 900px; margin: 30px auto; background:#fff; padding:20px; border-radius:8px; }
+.container.wide { max-width: 1200px; }
+.btn { background:#0057d9; color:#fff; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; text-decoration:none; }
+.btn.danger { background:#b42318; }
+table { width:100%; border-collapse: collapse; margin-top:10px; }
+th, td { border:1px solid #ddd; padding:6px; }
+.inline-form { display:flex; gap:8px; align-items:center; flex-wrap: wrap; margin-bottom:10px; }
+.alert { padding:10px; border-radius:6px; }
+.alert.error { background:#fee4e2; color:#b42318; }
+.alert.success { background:#dcfae6; color:#067647; }
+.pagination { display:flex; gap:10px; align-items:center; margin-top:10px; }

@@ -1,0 +1,7 @@
+{
+  "name": "vpcargo/app",
+  "description": "VPCargo import dependencies",
+  "require": {
+    "phpoffice/phpspreadsheet": "^2.1"
+  }
+}
