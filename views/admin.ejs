@@ -1,0 +1,45 @@
+<!doctype html><html lang="ru"><head><meta charset="UTF-8"><title>Админка</title><link rel="stylesheet" href="/style.css"></head>
+<body><main class="container wide"><h1>Админ-панель (JS)</h1>
+<form method="post" action="/logout"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn" type="submit">Выйти</button></form>
+<%- include('partials') %>
+
+<h2>Создать клиента</h2>
+<form method="post" action="/admin/users" class="inline-form">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="return_query" value="<%= returnQuery %>">
+<input name="login" placeholder="login" required><input name="phone" placeholder="+7XXXXXXXXXX" required><input type="password" name="password" placeholder="пароль" required>
+<button class="btn" type="submit">Создать</button></form>
+
+<h2>Добавить заказ</h2>
+<form method="post" action="/admin/orders" class="inline-form">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="return_query" value="<%= returnQuery %>">
+<input name="client" placeholder="логин или телефон" required><input name="cargo_number" placeholder="номер груза" required><button class="btn" type="submit">Добавить</button></form>
+
+<h2>Импорт CSV/XLSX</h2>
+<form method="post" action="/upload" enctype="multipart/form-data" class="inline-form">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="return_query" value="<%= returnQuery %>">
+<input type="file" name="import_file" accept=".csv,.xlsx" required><button class="btn" type="submit">Импорт</button></form>
+
+<h2>Фильтр</h2>
+<form method="get" action="/admin" class="inline-form">
+<input name="search" placeholder="поиск" value="<%= filters.search %>">
+<select name="status"><option value="">Все статусы</option><% allowedStatuses.forEach((s)=>{ %><option value="<%= s %>" <%= filters.status===s?'selected':'' %>><%= s %></option><% }) %></select>
+<select name="payment_status"><option value="">Все оплаты</option><% allowedPayments.forEach((p)=>{ %><option value="<%= p %>" <%= filters.payment_status===p?'selected':'' %>><%= p %></option><% }) %></select>
+<select name="per_page"><% [25,50,100].forEach((pp)=>{ %><option value="<%= pp %>" <%= perPage===pp?'selected':'' %>><%= pp %>/стр</option><% }) %></select>
+<button class="btn" type="submit">Применить</button></form>
+
+<table><thead><tr><th>Номер</th><th>Клиент</th><th>Телефон</th><th>Управление</th></tr></thead><tbody>
+<% orders.forEach((o)=> { %>
+<tr><td><%= o.cargo_number %></td><td><%= o.login %></td><td><%= o.phone %></td><td>
+<form method="post" action="/admin/orders/<%= o.id %>/update" class="inline-form">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="return_query" value="<%= returnQuery %>">
+<select name="status"><% allowedStatuses.forEach((s)=>{ %><option value="<%= s %>" <%= o.status===s?'selected':'' %>><%= s %></option><% }) %></select>
+<select name="payment_status"><% allowedPayments.forEach((p)=>{ %><option value="<%= p %>" <%= o.payment_status===p?'selected':'' %>><%= p %></option><% }) %></select>
+<input type="date" name="date_sent" value="<%= o.date_sent ? o.date_sent.toISOString().slice(0,10) : '' %>"><input type="number" step="0.01" min="0" name="cost" value="<%= o.cost %>">
+<button class="btn" type="submit">Сохранить</button></form>
+<form method="post" action="/admin/orders/<%= o.id %>/delete" class="inline-form" onsubmit="return confirm('Удалить заказ?')">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="return_query" value="<%= returnQuery %>"><button class="btn danger" type="submit">Удалить</button></form>
+</td></tr>
+<% }) %>
+</tbody></table>
+<div class="pagination"><a href="/admin?<%= new URLSearchParams({...filters, per_page: perPage, page: Math.max(1, page-1)}).toString() %>">←</a><span>Стр. <%= page %> / <%= totalPages %></span><a href="/admin?<%= new URLSearchParams({...filters, per_page: perPage, page: Math.min(totalPages, page+1)}).toString() %>">→</a></div>
+</main></body></html>
