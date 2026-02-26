@@ -9,9 +9,18 @@
 
 ## Запуск в один клик
 
+### Linux / macOS
 ```bash
 ./run.sh
 ```
+
+### Windows
+Просто запустите `run.bat` двойным кликом (или через cmd).
+
+Скрипт сам:
+- поднимет `db` + `app` в фоне,
+- дождётся ответа приложения,
+- откроет сайт в браузере.
 
 Сайт: `http://localhost:3000`
 
@@ -36,3 +45,10 @@ DB_HOST=127.0.0.1 DB_USER=root DB_PASS= DB_NAME=vpcargo npm start
 - `src/lib/*` — CSRF, форматирование, константы
 - `src/validators/*` — серверные проверки
 - `views/*` + `public/*` — UI
+
+
+## Остановка
+
+```bash
+docker compose down
+```
